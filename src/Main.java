@@ -15,43 +15,19 @@ public class Main {
             comNumber=scan.next();
             switch (comNumber){
                 case ("1"): {
-                    System.out.println("Какую покупку хотите добавить?");
-                    String productName=scan.next();
-                    products.add(productName);
-                    System.out.printf("Итого продуктов: %d", products.size());
+                    addProduct(products, scan);
                     break;
                 }
                 case ("2"): {
-                    for (String product:products){
-                        System.out.printf("\n%d. %s", products.indexOf(product)+1, product);
-                    }
+                    showProducts(products, "\n%d. %s");
                     break;
                 }
                 case ("3"): {
-                    System.out.println("Выберите продукт, который хотите удалить");
-                    for (String product:products){
-                        System.out.printf("%d. %s\n", products.indexOf(product)+1, product);
-                    }
-                    String productNumOrName=scan.next();
-                    try {
-                        int productNumber=Integer.parseInt(productNumOrName);
-                        System.out.printf("Удалён продукт под номером %d", productNumber);
-                        products.remove(productNumber-1);
-                    } catch (NumberFormatException e)
-                    {
-                        System.out.printf("Удалён продукт под названием %s", productNumOrName);
-                        products.remove(productNumOrName);
-                    }
+                    deleteProduct(products, scan);
                     break;
                 }
                 case ("4"): {
-                    System.out.println("Введите название продукта");
-                    String productName=scan.next();
-                    productName=productName.toLowerCase(Locale.ROOT);
-                    for (String product:products){
-                        temp=product.toLowerCase(Locale.ROOT);
-                        if (temp.equals(productName)) System.out.printf("\n%d. %s", products.indexOf(product)+1, product);
-                    }
+                    findProduct(products, scan);
                     break;
                 }
                 default: {
@@ -59,6 +35,45 @@ public class Main {
                     break;
                 }
             }
+        }
+    }
+
+    private static void findProduct(List<String> products, Scanner scan) {
+        String temp;
+        System.out.println("Введите название продукта");
+        String productName= scan.next();
+        productName=productName.toLowerCase(Locale.ROOT);
+        for (String product: products){
+            temp=product.toLowerCase(Locale.ROOT);
+            if (temp.equals(productName)) System.out.printf("\n%d. %s", products.indexOf(product)+1, product);
+        }
+    }
+
+    private static void addProduct(List<String> products, Scanner scan) {
+        System.out.println("Какую покупку хотите добавить?");
+        String productName= scan.next();
+        products.add(productName);
+        System.out.printf("Итого продуктов: %d", products.size());
+    }
+
+    private static void showProducts(List<String> products, String format) {
+        for (String product: products){
+            System.out.printf(format, products.indexOf(product)+1, product);
+        }
+    }
+
+    private static void deleteProduct(List<String> products, Scanner scan) {
+        System.out.println("Выберите продукт, который хотите удалить");
+        showProducts(products, "%d. %s\n");
+        String productNumOrName= scan.next();
+        try {
+            int productNumber=Integer.parseInt(productNumOrName);
+            System.out.printf("Удалён продукт под номером %d", productNumber);
+            products.remove(productNumber-1);
+        } catch (NumberFormatException e)
+        {
+            System.out.printf("Удалён продукт под названием %s", productNumOrName);
+            products.remove(productNumOrName);
         }
     }
 }
